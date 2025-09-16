@@ -1,0 +1,10 @@
+{
+  "extends": "expo/tsconfig.base",
+  "compilerOptions": {
+    "strict": true,
+    "paths": {
+      "psdk-repro": ["../src/index"],
+      "psdk-repro/*": ["../src/*"]
+    }
+  }
+}

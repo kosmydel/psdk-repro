@@ -1,0 +1,9 @@
+{
+  "platforms": ["apple", "android", "web"],
+  "apple": {
+    "modules": ["PsdkReproModule"]
+  },
+  "android": {
+    "modules": ["expo.modules.psdkrepro.PsdkReproModule"]
+  }
+}
