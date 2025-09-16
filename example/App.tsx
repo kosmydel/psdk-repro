@@ -1,37 +1,27 @@
-import { useEvent } from 'expo';
-import PsdkRepro, { PsdkReproView } from 'psdk-repro';
+import PsdkRepro from 'psdk-repro';
+import { useState } from 'react';
 import { Button, SafeAreaView, ScrollView, Text, View } from 'react-native';
 
 export default function App() {
-  const onChangePayload = useEvent(PsdkRepro, 'onChange');
-
+  const [isInitialized, setIsInitialized] = useState(false);
   return (
     <SafeAreaView style={styles.container}>
       <ScrollView style={styles.container}>
         <Text style={styles.header}>Module API Example</Text>
-        <Group name="Constants">
-          <Text>{PsdkRepro.PI}</Text>
-        </Group>
-        <Group name="Functions">
-          <Text>{PsdkRepro.hello()}</Text>
-        </Group>
-        <Group name="Async functions">
-          <Button
-            title="Set value"
-            onPress={async () => {
-              await PsdkRepro.setValueAsync('Hello from JS!');
-            }}
-          />
-        </Group>
-        <Group name="Events">
-          <Text>{onChangePayload?.value}</Text>
-        </Group>
-        <Group name="Views">
-          <PsdkReproView
-            url="https://www.example.com"
-            onLoad={({ nativeEvent: { url } }) => console.log(`Loaded: ${url}`)}
-            style={styles.view}
-          />
+        <Group name="PSDK Repro">
+            <Button title="Check if initialized" onPress={() => {
+                console.log('Checking if initialized');
+                try {
+                    console.log('Getting is initialized');
+                    const isInitialized = PsdkRepro.isInitialized();
+                    console.log("Is initialized", {isInitialized});
+                    setIsInitialized(isInitialized);
+                } catch (error) {
+                    console.error('Error getting is initialized', error);
+                    setIsInitialized(false);
+                }
+            }} />
+          <Text>Is initialized: {isInitialized ? 'YES' : 'NO'}</Text>
         </Group>
       </ScrollView>
     </SafeAreaView>

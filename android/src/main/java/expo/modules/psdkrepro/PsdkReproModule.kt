@@ -1,10 +1,16 @@
 package expo.modules.psdkrepro
 
+import android.util.Log
 import expo.modules.kotlin.modules.Module
 import expo.modules.kotlin.modules.ModuleDefinition
-import java.net.URL
+import com.meta.horizon.platform.ovr.Core;
+import expo.modules.kotlin.exception.Exceptions
 
 class PsdkReproModule : Module() {
+
+  val appID = "1234567890"
+
+  val TAG = "PSDK_REPRO_MODULE"
   // Each module class must implement the definition function. The definition consists of components
   // that describes the module's functionality and behavior.
   // See https://docs.expo.dev/modules/module-api for more details about available components.
@@ -14,37 +20,15 @@ class PsdkReproModule : Module() {
     // The module will be accessible from `requireNativeModule('PsdkRepro')` in JavaScript.
     Name("PsdkRepro")
 
-    // Defines constant property on the module.
-    Constant("PI") {
-      Math.PI
+    OnCreate {
+      Log.d(TAG, "Getting context...")
+      val context = appContext.reactContext ?: throw Exceptions.ReactContextLost()
+      Log.d(TAG, "Initializing the PSDK...")
+      Core.asyncInitialize(appID, context);
     }
 
-    // Defines event names that the module can send to JavaScript.
-    Events("onChange")
-
-    // Defines a JavaScript synchronous function that runs the native code on the JavaScript thread.
-    Function("hello") {
-      "Hello world! 👋"
-    }
-
-    // Defines a JavaScript function that always returns a Promise and whose native code
-    // is by default dispatched on the different thread than the JavaScript runtime runs on.
-    AsyncFunction("setValueAsync") { value: String ->
-      // Send an event to JavaScript.
-      sendEvent("onChange", mapOf(
-        "value" to value
-      ))
-    }
-
-    // Enables the module to be used as a native view. Definition components that are accepted as part of
-    // the view definition: Prop, Events.
-    View(PsdkReproView::class) {
-      // Defines a setter for the `url` prop.
-      Prop("url") { view: PsdkReproView, url: URL ->
-        view.webView.loadUrl(url.toString())
-      }
-      // Defines an event that the view can send to JavaScript.
-      Events("onLoad")
+    Function("isInitialized") {
+      Core.isInitialized()
     }
   }
 }

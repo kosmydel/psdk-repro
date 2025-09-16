@@ -1,11 +1,7 @@
 import { NativeModule, requireNativeModule } from 'expo';
 
-import { PsdkReproModuleEvents } from './PsdkRepro.types';
-
-declare class PsdkReproModule extends NativeModule<PsdkReproModuleEvents> {
-  PI: number;
-  hello(): string;
-  setValueAsync(value: string): Promise<void>;
+declare class PsdkReproModule extends NativeModule {
+  isInitialized(): boolean;
 }
 
 // This call loads the native module object from the JSI.
