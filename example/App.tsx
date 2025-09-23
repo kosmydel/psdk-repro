@@ -3,25 +3,34 @@ import { useState } from 'react';
 import { Button, SafeAreaView, ScrollView, Text, View } from 'react-native';
 
 export default function App() {
-  const [isInitialized, setIsInitialized] = useState(false);
+  const [initializationState, setInitializationState] = useState<string | null>(null);
   return (
     <SafeAreaView style={styles.container}>
       <ScrollView style={styles.container}>
         <Text style={styles.header}>Module API Example</Text>
         <Group name="PSDK Repro">
-            <Button title="Check if initialized" onPress={() => {
+            <Button title="Check if initialized" onPress={async () => {
                 console.log('Checking if initialized');
                 try {
                     console.log('Getting is initialized');
-                    const isInitialized = PsdkRepro.isInitialized();
+                    const isInitialized = await PsdkRepro.isInitialized();
                     console.log("Is initialized", {isInitialized});
-                    setIsInitialized(isInitialized);
+                    setInitializationState(JSON.stringify(isInitialized));
                 } catch (error) {
                     console.error('Error getting is initialized', error);
-                    setIsInitialized(false);
+                    setInitializationState(null);
                 }
             }} />
-          <Text>Is initialized: {isInitialized ? 'YES' : 'NO'}</Text>
+          <Text>Is initialized: {initializationState ? initializationState : 'NO'}</Text>
+          <Button title="Register for push notifications" onPress={async () => {
+            console.log('Registering for push notifications');
+            try {
+                await PsdkRepro.register();
+                console.log('Registered for push notifications');
+            } catch (error) {
+                console.error('Error registering for push notifications', error);
+            }
+          }} />
         </Group>
       </ScrollView>
     </SafeAreaView>
