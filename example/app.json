@@ -1,7 +1,7 @@
 {
   "expo": {
-    "name": "psdk-repro-example",
-    "slug": "psdk-repro-example",
+    "name": "expo-quest-notifications",
+    "slug": "expo-quest-notifications",
     "version": "1.0.0",
     "orientation": "portrait",
     "icon": "./assets/icon.png",

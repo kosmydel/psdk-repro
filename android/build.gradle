@@ -44,4 +44,9 @@ android {
 
 dependencies {
   implementation("com.meta.horizon.platform.ovr:android-platform-sdk:77")
+  implementation files('libs/android-platform-sdk-v79.aar')
+}
+
+configurations.all {
+    exclude group: "com.meta.horizon.platform.ovr", module: "android-platform-sdk"
 }

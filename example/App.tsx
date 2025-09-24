@@ -4,6 +4,9 @@ import { Button, SafeAreaView, ScrollView, Text, View } from 'react-native';
 
 export default function App() {
   const [isInitialized, setIsInitialized] = useState(false);
+  const [loggedInUserID, setLoggedInUserID] = useState(0);
+  const [pushNotificationID, setPushNotificationID] = useState('');
+  const [loggedInUserFriends, setLoggedInUserFriends] = useState<string[]>([]);
   return (
     <SafeAreaView style={styles.container}>
       <ScrollView style={styles.container}>
@@ -22,6 +25,41 @@ export default function App() {
                 }
             }} />
           <Text>Is initialized: {isInitialized ? 'YES' : 'NO'}</Text>
+          <Button title="Get logged in user ID" onPress={() => {
+            console.log('Getting logged in user ID');
+            const loggedInUserID = PsdkRepro.getLoggedInUserID();
+            console.log('Logged in user ID', {loggedInUserID});
+            setLoggedInUserID(loggedInUserID);
+          }} />
+          <Text>Logged in user ID: {loggedInUserID}</Text>
+        </Group>
+        <Group name="Push notifications">
+            <Button title="Register for push notifications" onPress={async () => {
+                console.log('Registering for push notifications');
+                try {
+                const pushNotificationID = await PsdkRepro.registerNotifications();
+                    console.log('Push notification ID', {pushNotificationID});
+                    setPushNotificationID(pushNotificationID);
+                } catch (error) {
+                    console.error('Error registering for push notifications', error);
+                    setPushNotificationID('');
+                }
+            }} />
+            <Text>Push notification ID: {pushNotificationID}</Text>
+        </Group>
+        <Group name="Logged in user friends">
+            <Button title="Get logged in user friends" onPress={async () => {
+                console.log('Getting logged in user friends');
+                try {
+                    const loggedInUserFriends = await PsdkRepro.getLoggedInUserFriends();
+                    console.log('Logged in user friends', {loggedInUserFriends});
+                    setLoggedInUserFriends(loggedInUserFriends);
+                } catch (error) {
+                    console.error('Error getting logged in user friends', error);
+                    setLoggedInUserFriends([]);
+                }
+            }} />
+            <Text>Logged in user friends: {loggedInUserFriends.join(', ')}</Text>
         </Group>
       </ScrollView>
     </SafeAreaView>

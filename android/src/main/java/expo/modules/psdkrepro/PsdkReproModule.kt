@@ -4,11 +4,17 @@ import android.util.Log
 import expo.modules.kotlin.modules.Module
 import expo.modules.kotlin.modules.ModuleDefinition
 import com.meta.horizon.platform.ovr.Core;
+import com.meta.horizon.platform.ovr.requests.PushNotification
+import com.meta.horizon.platform.ovr.requests.Users
 import expo.modules.kotlin.exception.Exceptions
+import expo.modules.kotlin.functions.Coroutine
+import kotlin.coroutines.resume
+import kotlin.coroutines.resumeWithException
+import kotlin.coroutines.suspendCoroutine
 
 class PsdkReproModule : Module() {
 
-  val appID = "1234567890"
+  val appID = "31229554193356425"
 
   val TAG = "PSDK_REPRO_MODULE"
   // Each module class must implement the definition function. The definition consists of components
@@ -29,6 +35,47 @@ class PsdkReproModule : Module() {
 
     Function("isInitialized") {
       Core.isInitialized()
+    }
+
+    Function("getLoggedInUserID") {
+      Core.getLoggedInUserID()
+    }
+
+    AsyncFunction("registerNotifications") Coroutine { ->
+      return@Coroutine registerNotificationsLogic()
+    }
+
+    AsyncFunction("getLoggedInUserFriends") Coroutine { ->
+      return@Coroutine getLoggedInUserFriendsLogic()
+    }
+  }
+
+  private suspend fun registerNotificationsLogic(): String = suspendCoroutine { continuation ->
+    Log.d(TAG, "Registering for push notifications...")
+    val pnr = PushNotification.register()
+
+    pnr.onError { error ->
+      Log.e(TAG, "Push notification registration failed: ${error.message}")
+      continuation.resumeWithException(Exceptions.IllegalStateException("Push notification registration failed: ${error.message}"))
+    }
+
+    pnr.onSuccess { success ->
+      Log.d(TAG, "Push notification registration successful: ${success.id}")
+      continuation.resume(success.id)
+    }
+  }
+
+  private suspend fun getLoggedInUserFriendsLogic(): List<String> = suspendCoroutine { continuation ->
+    Log.d(TAG, "Getting logged in user friends...")
+    val friends = Users.getLoggedInUserFriends()
+    friends.onSuccess { success ->
+      Log.d(TAG, "Logged in user friends: ${success.elements}")
+      continuation.resume(success.elements.map { it.displayName })
+    }
+
+    friends.onError { error ->
+      Log.e(TAG, "Error getting logged in user friends: ${error.message}")
+      continuation.resumeWithException(Exceptions.IllegalStateException("Error getting logged in user friends: ${error.message}"))
     }
   }
 }
