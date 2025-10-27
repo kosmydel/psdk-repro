@@ -43,10 +43,8 @@ android {
 }
 
 dependencies {
-  implementation("com.meta.horizon.platform.ovr:android-platform-sdk:77")
-  implementation files('libs/android-platform-sdk-v79.aar')
-}
-
-configurations.all {
-    exclude group: "com.meta.horizon.platform.ovr", module: "android-platform-sdk"
+  implementation("com.meta.horizon.platform.sdk:core-kotlin:0.1.2")
+  implementation("com.meta.horizon.platform.sdk:users-kotlin:0.1.2")
+  implementation("com.meta.horizon.platform.sdk:push-notification-kotlin:0.1.2")
+  implementation("com.facebook.kotlin.compilerplugins.dataclassgenerate:superclass:1.1.0")
 }
