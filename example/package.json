@@ -1,28 +1,32 @@
 {
-    "name": "psdk-repro-example",
-    "version": "1.0.0",
-    "main": "index.ts",
-    "scripts": {
-      "start": "expo start",
-      "android": "expo run:android",
-      "ios": "expo run:ios",
-      "web": "expo start --web"
-    },
-    "dependencies": {
-      "expo": "~54.0.7",
-      "react": "19.1.0",
-      "react-native": "0.81.4",
-      "psdk-repro": "link:.."
-    },
-    "devDependencies": {
-      "@types/react": "~19.1.0",
-      "typescript": "~5.9.2"
-    },
-    "private": true,
-    "expo": {
-      "autolinking": {
-        "searchPaths": [".."],
-        "legacy_shallowReactNativeLinking": true
-      }
+  "name": "psdk-repro-example",
+  "version": "1.0.0",
+  "main": "index.ts",
+  "scripts": {
+    "start": "expo start",
+    "android": "expo run:android",
+    "ios": "expo run:ios",
+    "web": "expo start --web"
+  },
+  "dependencies": {
+    "expo": "~54.0.7",
+    "expo-build-properties": "~1.0.9",
+    "psdk-repro": "link:..",
+    "react": "19.1.0",
+    "react-native": "0.81.4"
+  },
+  "devDependencies": {
+    "@types/react": "~19.1.0",
+    "tsx": "^4.20.5",
+    "typescript": "~5.9.2"
+  },
+  "private": true,
+  "expo": {
+    "autolinking": {
+      "searchPaths": [
+        ".."
+      ],
+      "legacy_shallowReactNativeLinking": true
     }
   }
+}

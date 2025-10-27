@@ -1,4 +1,6 @@
-{
+import 'tsx/cjs';
+
+module.exports = () => ({
   "expo": {
     "name": "expo-quest-notifications",
     "slug": "expo-quest-notifications",
@@ -23,10 +25,23 @@
       },
       "edgeToEdgeEnabled": true,
       "predictiveBackGestureEnabled": false,
-      "package": "expo.modules.psdkrepro.example"
+      "package": "com.jakubswm.questlocation",
+      "versionCode": 2,
     },
     "web": {
       "favicon": "./assets/favicon.png"
-    }
+    },
+    "plugins": [
+        [
+          "expo-build-properties",
+          {
+            "android": {
+              "compileSdkVersion": 34,
+              "targetSdkVersion": 34,
+            }
+          }
+        ],
+        ["./plugins/withPlugin.ts"],
+      ]
   }
-}
+})
